@@ -28,6 +28,9 @@ public class ConfigHazelcast {
 
 
         NetworkConfig networkConfig = config.getNetworkConfig();
+
+        networkConfig.getInterfaces().setEnabled(true).addInterface("10.*.*.*");
+
         JoinConfig join = networkConfig.getJoin();
         join.getMulticastConfig().setEnabled(false);
         join.getTcpIpConfig().setEnabled(true);
@@ -47,12 +50,14 @@ public class ConfigHazelcast {
         String groupPassword = (String) credentials.get("group_pass");
         List<String> members = (List<String>) credentials.get("members");
 
+
+
         GroupConfig groupConfig = config.getGroupConfig();
         groupConfig.setName(groupName).setPassword(groupPassword);
 
+
         for (String member : members) {
-            join.getTcpIpConfig().addMember(member.replace('"', ' ').trim());
-            System.out.println("adding member: " + member);
+            join.getTcpIpConfig().addMember(member.replace('"', ' ').trim() + ":5701");
         }
 
         return Hazelcast.newHazelcastInstance(config);

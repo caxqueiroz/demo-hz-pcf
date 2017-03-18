@@ -2,7 +2,7 @@
 applications:
 - name: hz-pcf-custom-pojo
   memory: 1G
-  instances: 3
+  instances: 1
   path: target/demo-0.0.1-SNAPSHOT.jar
   services:
-    - hz-dev
+    - hz-dev-1
