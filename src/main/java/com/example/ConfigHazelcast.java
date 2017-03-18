@@ -51,7 +51,8 @@ public class ConfigHazelcast {
         groupConfig.setName(groupName).setPassword(groupPassword);
 
         for (String member : members) {
-            join.getTcpIpConfig().addMember(member.replace('"', ' ').trim() + ":5701");
+            join.getTcpIpConfig().addMember(member.replace('"', ' ').trim());
+            System.out.println("adding member: " + member);
         }
 
         return Hazelcast.newHazelcastInstance(config);
