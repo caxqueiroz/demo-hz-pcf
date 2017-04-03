@@ -5,13 +5,12 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.hazelcast.query.PagingPredicate;
 import com.hazelcast.query.Predicate;
-import com.hazelcast.query.PredicateBuilder;
 import com.hazelcast.query.Predicates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by cq on 11/2/17.
@@ -45,7 +44,11 @@ public class TickRepository {
     public List<Tick> findAll(String instrument, int pageSize, int pageNumber){
         Predicate<Long,Tick> predicate = Predicates.equal("instrument",instrument);
         PagingPredicate<Long,Tick> pagingPredicate = new PagingPredicate<>(predicate,pageSize);
-        return ticks().values(pagingPredicate).stream().collect(Collectors.toList());
+        List<Tick> ticks = new ArrayList<>();
+        for (Tick tick : ticks().values(pagingPredicate)) {
+            ticks.add(tick);
+        }
+        return ticks;
 
 
     }
