@@ -1,6 +1,10 @@
 package com.example;
 
-import com.hazelcast.config.*;
+import com.hazelcast.config.Config;
+import com.hazelcast.config.GroupConfig;
+import com.hazelcast.config.JoinConfig;
+import com.hazelcast.config.NetworkConfig;
+import com.hazelcast.config.UserCodeDeploymentConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import org.springframework.boot.json.BasicJsonParser;
@@ -20,12 +24,13 @@ public class ConfigHazelcast {
     HazelcastInstance hazelcastInstance() {
 
         Config config = new Config();
+        config.setLiteMember(true);
+        config.setLicenseKey("YOUR_LICENSE_KEY");
         UserCodeDeploymentConfig distCLConfig = config.getUserCodeDeploymentConfig();
         distCLConfig.setEnabled(true)
         .setClassCacheMode(UserCodeDeploymentConfig.ClassCacheMode.ETERNAL)
                 .setProviderMode(UserCodeDeploymentConfig.ProviderMode.LOCAL_CLASSES_ONLY)
                 .setWhitelistedPrefixes("com.example.model");
-
 
         NetworkConfig networkConfig = config.getNetworkConfig();
 
@@ -49,8 +54,6 @@ public class ConfigHazelcast {
         String groupName = (String) credentials.get("group_name");
         String groupPassword = (String) credentials.get("group_pass");
         List<String> members = (List<String>) credentials.get("members");
-
-
 
         GroupConfig groupConfig = config.getGroupConfig();
         groupConfig.setName(groupName).setPassword(groupPassword);
